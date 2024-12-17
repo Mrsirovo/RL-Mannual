@@ -4,8 +4,8 @@
 **Observation** $o$ is a partial description of a state, which may omit information.  
 **Policy** $\pi$ is a rule used by an agent to decide what actions to take. Policy can be deterministic (确定性的) $a_t=\mu(s_t)$ or stochastic (随机的) $a_t \sim \pi(\cdot \mid s_t)$.  
 **Trajectory** $\tau$ is a sequence of states and actions, $\tau = (s_0, a_0, s_1, a_1, \dots)$, where $s_0 \sim \rho_0(\cdot)$ is the initial state, state transitions are $s_{t+1} = f(s_t, a_t)$ (deterministic) or $s_{t+1} \sim P(\cdot|s_t, a_t)$ (stochastic), and actions are chosen by the agent's policy.  
-**Reward** $r_t$ is a scalar feedback signal given to the agent at each timestep $t$, based on the current state and action pair $(s_t, a_t)$.  
-**Return** $R_t$ is the cumulative discounted reward from timestep $t$ onward, defined as $R_t = \sum_{k=0}^\infty \gamma^k r_{t+k}$, where $\gamma \in [0, 1]$ is the **discount factor**.  
+**Reward** $r_t$ is a scalar feedback signal given to the agent at each timestep $t$, based on the current state $(s_t)$ or state and action pair $(s_t, a_t)$.  
+**Return** $R(\tau)$ is the cumulative discounted reward from timestep $t$ onward, defined as $R(\tau) = \sum_{k=0}^\infty \gamma^k r_{t+k}$, where $\gamma \in [0, 1]$ is the **discount factor**.  
 
 **Value functions** measure the expected return starting from a state or state-action pair under a given policy or the optimal policy, and are central to most RL algorithms:
 - **On-Policy Value Function** $V^{\pi}(s)$: $V^{\pi}(s) = E_{\tau \sim \pi} \left[ R(\tau) \mid s_0 = s \right]$  
@@ -18,6 +18,13 @@ The expected return is: $J(\pi) = E_{\tau \sim \pi}[R(\tau)]$
 The central optimization problem is: $\pi^* = \text{arg max}_{\pi} J(\pi)$ where $\pi^*$ is the **optimal policy**.
 
 ## Notes
+
+### Bellman Equations  
+Basic idea of Bellman equations is: The value of your starting point is the reward you expect to get from being there, plus the value of wherever you land next.  
+#### **On-Policy Value Functions**  
+- **State Value**: $V^{\pi}(s) = E_{a \sim \pi, s' \sim P} [r(s,a) + \gamma V^{\pi}(s')]$.  
+- **Action-Value**: $Q^{\pi}(s,a) = E_{s' \sim P} [r(s,a) + \gamma \mathbb{E}_{a' \sim \pi} [Q^{\pi}(s',a')]]$.
+
 ### Categorical and Diagonal Gaussian Policies
 
 #### **Categorical Policies**  
@@ -33,3 +40,13 @@ The central optimization problem is: $\pi^* = \text{arg max}_{\pi} J(\pi)$ where
   - **State-Dependent**: $log σ_θ(s)$.  
 - **Sampling**:  $a = μ_θ(s) + σ_θ(s) ⊙ z$, where $z ~ N(0, I)$  
 - **Log-Likelihood**:  $log π_θ(a|s) = -1/2 * [ Σ_i^k ( (a_i - μ_i)^2 / σ_i^2 + 2 log σ_i ) + k log 2π ]$
+
+
+## Formalism  
+A **Markov Decision Process (MDP)** is defined as a 5-tuple: $\langle S, A, R, P, \rho_0 \rangle$  
+- $S$: Set of valid states.  
+- $A$: Set of valid actions.  
+- $R: S \times A \times S \to \mathbb{R}$: Reward function, $r_t = R(s_t, a_t, s_{t+1})$.  
+- $P: S \times A \to \mathcal{P}(S)$: Transition probability, $P(s' \mid s, a)$.  
+- $\rho_0$: Starting state distribution.  
+**Markov Property**: Transitions depend only on the current state $s$ and action $a$, not on prior history.
