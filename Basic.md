@@ -5,7 +5,11 @@
 **Policy** $\pi$ is a rule used by an agent to decide what actions to take. Policy can be deterministic (确定性的) $a_t=\mu(s_t)$ or stochastic (随机的) $a_t \sim \pi(\cdot \mid s_t)$.  
 **Trajectory** $\tau$ is a sequence of states and actions, $\tau = (s_0, a_0, s_1, a_1, \dots)$, where $s_0 \sim \rho_0(\cdot)$ is the initial state, state transitions are $s_{t+1} = f(s_t, a_t)$ (deterministic) or $s_{t+1} \sim P(\cdot|s_t, a_t)$ (stochastic), and actions are chosen by the agent's policy.  
 **Reward** $r_t$ is a scalar feedback signal given to the agent at each timestep $t$, based on the current state and action pair $(s_t, a_t)$.  
-**Return** $R_t$ is the cumulative discounted reward from timestep $t$ onward, defined as $R_t = \sum_{k=0}^\infty \gamma^k r_{t+k}$, where $\gamma \in [0, 1]$ is the **discount factor**. 
+**Return** $R_t$ is the cumulative discounted reward from timestep $t$ onward, defined as $R_t = \sum_{k=0}^\infty \gamma^k r_{t+k}$, where $\gamma \in [0, 1]$ is the **discount factor**.  
+
+**Value functions** measure the expected return starting from a state or state-action pair under a given policy or the optimal policy, and are central to most RL algorithms:
+- **On-Policy Value Function** $V^{\pi}(s)$: $V^{\pi}(s) = E_{\tau \sim \pi} \left[ R(\tau) \mid s_0 = s \right]$  
+- **On-Policy Action-Value Function** $Q^{\pi}(s,a)$: $Q^{\pi}(s,a) = E_{\tau \sim \pi} \left[ R(\tau) \mid s_0 = s, a_0 = a \right]$
 
 ## RL Problem Formulation
 The goal in RL is to find a policy $\pi$ that **maximizes the expected return** $J(\pi)$, where the return can be finite-horizon or infinite-horizon.  
