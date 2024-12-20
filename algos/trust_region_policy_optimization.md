@@ -9,31 +9,31 @@ TRPO is an on-policy algorithm designed to improve policy performance by taking 
 Given a policy parameterized by $\theta$, denoted as $\pi_{\theta}$, the theoretical TRPO update is defined as:
 
 $$
-\theta_{k+1} = \arg \max_{\theta} \; \mathcal{L}(\theta_k, \theta) \quad \text{s.t.} \quad \bar{D}_{KL}(\theta \| \theta_k) \leq \delta
+\theta_{k+1} = \arg \max_{\theta} \; \mathcal{L}(\theta_k, \theta) \quad \text{s.t.} \quad D_{KL}(\theta \| \theta_k) \leq \delta
 $$
 
 Here:
 
-- $L(\theta_k, \theta)$ represents the surrogate advantage, assessing how the new policy $\pi_{\theta}$ performs relative to the old policy $\pi_{\theta_k}$ using data from $\pi_{\theta_k}$:
+- $L(\theta_k, \theta)$ represents the surrogate advantage, assessing how the new policy $\pi_{\theta}$ performs relative to the old policy $\pi_{\theta_k}$ using data from $\pi_{\theta_k}$ :
 
-  $$
-  L(\theta_k, \theta) = \mathbb{E}_{s,a \sim \pi_{\theta_k}} \left[ \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)} A^{\pi_{\theta_k}}(s,a) \right]
-  $$
+$$
+L(\theta_k, \theta) = E_{s,a \sim \pi_{\theta_k}} \left[ \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)} A^{\pi_{\theta_k}}(s,a) \right]
+$$
 
-- $\bar{D}_{KL}(\theta \| \theta_k)$ is the average KL divergence between the new and old policies across states visited by $\pi_{\theta_k}$:
+- $D_{KL} (\theta \| \theta_k)$ is the average KL divergence between the new and old policies across states visited by $\pi_{\theta_k}$ :
 
-  $$
-  \bar{D}_{KL}(\theta \| \theta_k) = E_{s \sim \pi_{\theta_k}} \left[ D_{KL}\left(\pi_{\theta}(\cdot|s) \| \pi_{\theta_k}(\cdot|s) \right) \right]
-  $$
+$$
+D_{KL}(\theta \| \theta_k) = E_{s \sim \pi_{\theta_k}} \left[ D_{KL}\left(\pi_{\theta}(\cdot|s) \| \pi_{\theta_k}(\cdot|s) \right) \right]
+$$
 
-To facilitate computation, TRPO approximates these expressions using first-order Taylor expansions around $\theta_k$:
+To facilitate computation, TRPO approximates these expressions using first-order Taylor expansions around $\theta_k$ :
 
 $$
 L(\theta_k, \theta) \approx g^T (\theta - \theta_k)
 $$
 
 $$
-\bar{D}_{KL}(\theta \| \theta_k) \approx \frac{1}{2} (\theta - \theta_k)^T H (\theta - \theta_k)
+D_{KL}(\theta \| \theta_k) \approx \frac{1}{2} (\theta - \theta_k)^T H (\theta - \theta_k)
 $$
 
 where $g$ is the gradient of the surrogate advantage function with respect to $\theta$, and $H$ is the Hessian of the average KL divergence. This leads to the simplified optimization problem:
