@@ -20,6 +20,10 @@ $$
 \theta_{k+1} = \theta_k + \alpha \nabla_{\theta} J(\pi_{\theta_k})
 $$
 
+## Exploration vs. Exploitation
+
+VPG trains a stochastic policy in an on-policy way. This means that it explores by sampling actions according to the latest version of its stochastic policy. The amount of randomness in action selection depends on both initial conditions and the training procedure. Over the course of training, the policy typically becomes progressively less random, as the update rule encourages it to exploit rewards that it has already found. This may cause the policy to get trapped in local optima.
+
 ## Algorithm
 
 Below is the **Vanilla Policy Gradient Algorithm** wrapped in a code block for clarity:
