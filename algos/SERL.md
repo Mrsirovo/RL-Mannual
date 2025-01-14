@@ -1,6 +1,6 @@
 # SERL (Sample-Efficient Reinforcement Learning)
 
-Feature: off-policy + on-policy, real-world reinforcement learning, learning with prior data.
+Feature: off-policy, online, real-world reinforcement learning, learning with prior data.
 
 paper: https://arxiv.org/pdf/2401.16013
 
